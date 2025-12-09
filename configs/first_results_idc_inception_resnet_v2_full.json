@@ -1,0 +1,45 @@
+{
+  "experiment_name": "first_results_inception_resnet_v2_idc_full",
+  "output_dir": "results/first_results/inception_resnet_v2_full",
+
+  "seed": 42,
+
+  "data": {
+    "root_dir": "data/IDC",
+    "img_size": 299,
+    "batch_size": 32,
+    "num_workers": 4,
+    "pin_memory": true,
+    "max_images_per_class_train": 1000000,
+    "max_images_per_class_val": 1000000,
+    "max_images_per_class_test": 1000000
+  },
+
+  "model": {
+    "arch": "inception_resnet_v2",
+    "num_classes": 2,
+    "pretrained": true
+  },
+
+  "optim": {
+    "name": "adam",
+    "lr": 0.0003,
+    "weight_decay": 0.0001
+  },
+
+  "scheduler": {
+    "name": "none"
+  },
+
+  "training": {
+    "num_epochs": 10,
+    "device": "cuda",
+    "mixed_precision": true
+  },
+
+  "logging": {
+    "log_dir": "results/first_results/logs_inception_resnet_v2",
+    "log_level": "INFO",
+    "log_to_file": true
+  }
+}
