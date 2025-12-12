@@ -11,6 +11,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.cuda.amp import GradScaler, autocast
 
+from tqdm.auto import tqdm
 
 def set_seed(seed: int) -> None:
     random.seed(seed)
@@ -35,7 +36,6 @@ def _split_inception_outputs(
         logits = outputs
     return logits, aux_logits
 
-
 def train_one_epoch(
     model: nn.Module,
     dataloader: torch.utils.data.DataLoader,
@@ -50,6 +50,15 @@ def train_one_epoch(
     total_loss = 0.0
     total_correct = 0
     total_samples = 0
+
+    dataset_size = len(dataloader.dataset)
+
+    pbar = tqdm(
+        total=dataset_size,
+        desc="Train",
+        unit="img",
+        leave=True,
+    )
 
     for inputs, targets in dataloader:
         inputs = inputs.to(device, non_blocking=True)
@@ -84,6 +93,18 @@ def train_one_epoch(
         preds = logits.argmax(dim=1)
         total_correct += (preds == targets).sum().item()
         total_samples += batch_size
+
+        avg_loss = total_loss / max(total_samples, 1)
+        avg_acc = total_correct / max(total_samples, 1)
+
+        pbar.update(batch_size)
+        pbar.set_postfix({
+            "loss": f"{avg_loss:.4f}",
+            "acc": f"{avg_acc * 100:.2f}%",
+            "seen": total_samples,
+        })
+
+    pbar.close()
 
     avg_loss = total_loss / max(total_samples, 1)
     avg_acc = total_correct / max(total_samples, 1)
