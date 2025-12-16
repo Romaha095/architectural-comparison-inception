@@ -1,0 +1,33 @@
+Classifier params: 3074
+Trainable params total: 3201026
+
+Last children modules trainable params:
+08 | Sequential                | trainable=0 / total=1,231,680
+09 | Mixed_6a                  | trainable=0 / total=2,664,960
+10 | Sequential                | trainable=0 / total=22,535,680
+11 | Mixed_7a                  | trainable=0 / total=3,880,960
+12 | Sequential                | trainable=0 / total=18,318,816
+13 | Block8                    | trainable=0 / total=2,035,424
+14 | ConvNormAct               | trainable=3,197,952 / total=3,197,952
+17 | Linear                    | trainable=3,074 / total=3,074
+
+Top trainable tensors:
+ 3,194,880  conv2d_7b.conv.weight
+     3,072  classif.weight
+     1,536  conv2d_7b.bn.weight
+     1,536  conv2d_7b.bn.bias
+         2  classif.bias
+
+
+=== Last children modules ===
+00 | repeat                    | trainable=0 / total=1,231,680
+01 | mixed_6a                  | trainable=0 / total=2,664,960
+02 | repeat_1                  | trainable=0 / total=22,535,680
+03 | mixed_7a                  | trainable=0 / total=3,880,960
+04 | repeat_2                  | trainable=0 / total=18,318,816
+05 | block8                    | trainable=0 / total=2,035,424
+06 | conv2d_7b                 | trainable=3,197,952 / total=3,197,952
+09 | classif                   | trainable=3,074 / total=3,074
+
+Classifier params: 3074
+Trainable params total: 3201026
