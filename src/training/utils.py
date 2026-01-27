@@ -151,20 +151,51 @@ def create_optimizer(
 ) -> optim.Optimizer:
     name = optim_cfg.get("name", "adam").lower()
     lr = float(optim_cfg.get("lr", 3e-4))
+    lr_backbone = float(optim_cfg.get("lr_backbone", lr))
+    lr_head = float(optim_cfg.get("lr_head", lr))
     weight_decay = float(optim_cfg.get("weight_decay", 0.0))
 
-    params = [p for p in model.parameters() if p.requires_grad]
+    head_params = []
+    backbone_params = []
+
+    for n, p in model.named_parameters():
+        if not p.requires_grad:
+            continue
+        if n.startswith("fc.") or n.startswith("AuxLogits.fc."):
+            head_params.append(p)
+        else:
+            backbone_params.append(p)
+
+    if len(head_params) == 0:
+        params = [p for p in model.parameters() if p.requires_grad]
+        if name == "adam":
+            return optim.Adam(params, lr=lr, weight_decay=weight_decay)
+        if name == "adamw":
+            return optim.AdamW(params, lr=lr, weight_decay=weight_decay)
+        if name == "sgd":
+            momentum = float(optim_cfg.get("momentum", 0.9))
+            nesterov = bool(optim_cfg.get("nesterov", True))
+            return optim.SGD(
+                params, lr=lr, weight_decay=weight_decay,
+                momentum=momentum, nesterov=nesterov
+            )
+        raise ValueError(f"Unknown optimizer: {name}")
+
+    param_groups = [
+        {"params": backbone_params, "lr": lr_backbone},
+        {"params": head_params, "lr": lr_head},
+    ]
 
     if name == "adam":
-        return optim.Adam(params, lr=lr, weight_decay=weight_decay)
+        return optim.Adam(param_groups, lr=lr_head, weight_decay=weight_decay)
     if name == "adamw":
-        return optim.AdamW(params, lr=lr, weight_decay=weight_decay)
+        return optim.AdamW(param_groups, lr=lr_head, weight_decay=weight_decay)
     if name == "sgd":
         momentum = float(optim_cfg.get("momentum", 0.9))
         nesterov = bool(optim_cfg.get("nesterov", True))
         return optim.SGD(
-            params,
-            lr=lr,
+            param_groups,
+            lr=lr_head,
             weight_decay=weight_decay,
             momentum=momentum,
             nesterov=nesterov,
