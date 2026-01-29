@@ -20,6 +20,10 @@ def build_inception_v3(
     in_features = model.fc.in_features
     model.fc = nn.Linear(in_features, num_classes)
 
+    if hasattr(model, "AuxLogits") and model.AuxLogits is not None:
+        aux_in_features = model.AuxLogits.fc.in_features
+        model.AuxLogits.fc = nn.Linear(aux_in_features, num_classes)
+
     if freeze_backbone:
         for name, param in model.named_parameters():
             if not name.startswith("fc."):

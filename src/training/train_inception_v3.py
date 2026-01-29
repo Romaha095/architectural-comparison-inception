@@ -119,6 +119,12 @@ def main():
     best_val_acc = 0.0
     output_dir = Path(cfg["output_dir"])
 
+    patience = int(cfg.get("training", {}).get("early_stopping_patience", 7))
+    min_delta = float(cfg.get("training", {}).get("early_stopping_min_delta", 0.0))
+
+    best_val_loss = float("inf")
+    bad_epochs = 0
+
     for epoch in range(1, num_epochs + 1):
         logger.info(f"Epoch {epoch}/{num_epochs}")
 
@@ -138,6 +144,15 @@ def main():
             criterion=criterion,
             device=device,
         )
+
+        if val_loss < best_val_loss - min_delta:
+            best_val_loss = val_loss
+            bad_epochs = 0
+        else:
+            bad_epochs += 1
+            if bad_epochs >= patience:
+                logger.info(f"Early stopping: no val_loss improvement for {patience} epochs.")
+                break
 
         logger.info(
             f"  Train: loss={train_loss:.4f}, acc={train_acc*100:.2f}% | "
