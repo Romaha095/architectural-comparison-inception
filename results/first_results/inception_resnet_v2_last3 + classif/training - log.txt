@@ -1,0 +1,45 @@
+2025-12-16 08:02:50 | INFO | __main__ | Seed set to 42
+2025-12-16 08:02:50 | INFO | __main__ | Using device: cuda
+2025-12-16 08:03:10 | INFO | __main__ | ***** Running training *****
+2025-12-16 08:03:10 | INFO | __main__ |   Train examples = 15985
+2025-12-16 08:03:10 | INFO | __main__ |   Val   examples = 1776
+2025-12-16 08:03:10 | INFO | __main__ |   Test  examples = 4440
+2025-12-16 08:03:10 | INFO | __main__ |   Batch size     = 32
+2025-12-16 08:03:11 | INFO | timm.models._builder | Loading pretrained weights from Hugging Face hub (timm/inception_resnet_v2.tf_in1k)
+2025-12-16 08:03:11 | INFO | timm.models._hub | [timm/inception_resnet_v2.tf_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+2025-12-16 08:03:11 | INFO | timm.models._builder | Missing keys (classif.weight, classif.bias) discovered while loading pretrained weights. This is expected if model is being adapted.
+2025-12-16 08:03:11 | INFO | __main__ | Model: inception_resnet_v2
+2025-12-16 08:03:11 | INFO | __main__ |   Total params     = 54,309,538
+2025-12-16 08:03:11 | INFO | __main__ |   Trainable params = 23,555,266
+2025-12-16 08:03:11 | INFO | __main__ | Mixed precision: True
+2025-12-16 08:03:11 | INFO | __main__ | Epoch 1/10
+2025-12-16 08:05:09 | INFO | __main__ |   Train: loss=0.3343, acc=85.77% | Val: loss=0.3063, acc=87.56%
+2025-12-16 08:05:10 | INFO | __main__ |   New best val acc: 87.56% (checkpoint: best.pt)
+2025-12-16 08:05:10 | INFO | __main__ | Epoch 2/10
+2025-12-16 08:07:07 | INFO | __main__ |   Train: loss=0.2814, acc=88.42% | Val: loss=0.2898, acc=87.39%
+2025-12-16 08:07:08 | INFO | __main__ | Epoch 3/10
+2025-12-16 08:09:06 | INFO | __main__ |   Train: loss=0.2455, acc=89.79% | Val: loss=0.3271, acc=87.50%
+2025-12-16 08:09:07 | INFO | __main__ | Epoch 4/10
+2025-12-16 08:11:05 | INFO | __main__ |   Train: loss=0.2144, acc=91.09% | Val: loss=0.3278, acc=88.29%
+2025-12-16 08:11:06 | INFO | __main__ |   New best val acc: 88.29% (checkpoint: best.pt)
+2025-12-16 08:11:06 | INFO | __main__ | Epoch 5/10
+2025-12-16 08:13:03 | INFO | __main__ |   Train: loss=0.1767, acc=93.01% | Val: loss=0.3708, acc=86.15%
+2025-12-16 08:13:04 | INFO | __main__ | Epoch 6/10
+2025-12-16 08:15:00 | INFO | __main__ |   Train: loss=0.1475, acc=94.03% | Val: loss=0.3614, acc=88.06%
+2025-12-16 08:15:01 | INFO | __main__ | Epoch 7/10
+2025-12-16 08:16:58 | INFO | __main__ |   Train: loss=0.1147, acc=95.56% | Val: loss=0.4237, acc=86.09%
+2025-12-16 08:16:58 | INFO | __main__ | Epoch 8/10
+2025-12-16 08:18:55 | INFO | __main__ |   Train: loss=0.0910, acc=96.64% | Val: loss=0.4900, acc=87.33%
+2025-12-16 08:18:56 | INFO | __main__ | Epoch 9/10
+2025-12-16 08:20:53 | INFO | __main__ |   Train: loss=0.0774, acc=97.12% | Val: loss=0.5049, acc=85.47%
+2025-12-16 08:20:53 | INFO | __main__ | Epoch 10/10
+2025-12-16 08:22:50 | INFO | __main__ |   Train: loss=0.0733, acc=97.11% | Val: loss=0.5231, acc=87.22%
+2025-12-16 08:22:51 | INFO | __main__ | Training finished. Running final test evaluation...
+2025-12-16 08:23:15 | INFO | __main__ | Test (CE): loss=0.5155, acc=87.23%
+2025-12-16 08:23:38 | INFO | __main__ | Test metrics: accuracy=87.23%, precision=85.31%, recall=82.41%, f1=83.66%, latency=1.33 ms/img, throughput=750.08 img/s
+2025-12-16 08:23:44 | INFO | __main__ | Seed set to 42
+2025-12-16 08:23:44 | INFO | __main__ | Using device: cuda
+2025-12-16 08:23:58 | INFO | timm.models._builder | Loading pretrained weights from Hugging Face hub (timm/inception_resnet_v2.tf_in1k)
+2025-12-16 08:23:58 | INFO | timm.models._hub | [timm/inception_resnet_v2.tf_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+2025-12-16 08:23:58 | INFO | timm.models._builder | Missing keys (classif.weight, classif.bias) discovered while loading pretrained weights. This is expected if model is being adapted.
+2025-12-16 08:23:59 | INFO | __main__ | Loading checkpoint from results/train_inception_resnet_v2

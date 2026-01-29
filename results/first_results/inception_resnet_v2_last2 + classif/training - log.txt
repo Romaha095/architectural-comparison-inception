@@ -1,0 +1,54 @@
+2025-12-16 08:35:32 | INFO | __main__ | Seed set to 42
+2025-12-16 08:35:32 | INFO | __main__ | Using device: cuda
+2025-12-16 08:35:44 | INFO | __main__ | ***** Running training *****
+2025-12-16 08:35:44 | INFO | __main__ |   Train examples = 15985
+2025-12-16 08:35:44 | INFO | __main__ |   Val   examples = 1776
+2025-12-16 08:35:44 | INFO | __main__ |   Test  examples = 4440
+2025-12-16 08:35:44 | INFO | __main__ |   Batch size     = 32
+2025-12-16 08:35:45 | INFO | timm.models._builder | Loading pretrained weights from Hugging Face hub (timm/inception_resnet_v2.tf_in1k)
+2025-12-16 08:35:45 | INFO | timm.models._hub | [timm/inception_resnet_v2.tf_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+2025-12-16 08:35:45 | INFO | timm.models._builder | Missing keys (classif.weight, classif.bias) discovered while loading pretrained weights. This is expected if model is being adapted.
+2025-12-16 08:35:46 | INFO | __main__ | Model: inception_resnet_v2
+2025-12-16 08:35:46 | INFO | __main__ |   Total params     = 54,309,538
+2025-12-16 08:35:46 | INFO | __main__ |   Trainable params = 3,074
+2025-12-16 08:35:46 | INFO | __main__ | Mixed precision: True
+2025-12-16 08:35:46 | INFO | __main__ | Epoch 1/10
+2025-12-16 08:39:32 | INFO | __main__ | Seed set to 42
+2025-12-16 08:39:32 | INFO | __main__ | Using device: cuda
+2025-12-16 08:39:42 | INFO | __main__ | ***** Running training *****
+2025-12-16 08:39:42 | INFO | __main__ |   Train examples = 15985
+2025-12-16 08:39:42 | INFO | __main__ |   Val   examples = 1776
+2025-12-16 08:39:42 | INFO | __main__ |   Test  examples = 4440
+2025-12-16 08:39:42 | INFO | __main__ |   Batch size     = 32
+2025-12-16 08:39:42 | INFO | timm.models._builder | Loading pretrained weights from Hugging Face hub (timm/inception_resnet_v2.tf_in1k)
+2025-12-16 08:39:43 | INFO | timm.models._hub | [timm/inception_resnet_v2.tf_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+2025-12-16 08:39:43 | INFO | timm.models._builder | Missing keys (classif.weight, classif.bias) discovered while loading pretrained weights. This is expected if model is being adapted.
+2025-12-16 08:39:43 | INFO | __main__ | Model: inception_resnet_v2
+2025-12-16 08:39:43 | INFO | __main__ |   Total params     = 54,309,538
+2025-12-16 08:39:43 | INFO | __main__ |   Trainable params = 5,236,450
+2025-12-16 08:39:43 | INFO | __main__ | Mixed precision: True
+2025-12-16 08:39:43 | INFO | __main__ | Epoch 1/10
+2025-12-16 08:41:21 | INFO | __main__ |   Train: loss=0.3566, acc=84.54% | Val: loss=0.3369, acc=85.59%
+2025-12-16 08:41:22 | INFO | __main__ |   New best val acc: 85.59% (checkpoint: best.pt)
+2025-12-16 08:41:22 | INFO | __main__ | Epoch 2/10
+2025-12-16 08:43:00 | INFO | __main__ |   Train: loss=0.3184, acc=86.42% | Val: loss=0.3126, acc=87.22%
+2025-12-16 08:43:01 | INFO | __main__ |   New best val acc: 87.22% (checkpoint: best.pt)
+2025-12-16 08:43:01 | INFO | __main__ | Epoch 3/10
+2025-12-16 08:44:38 | INFO | __main__ |   Train: loss=0.3034, acc=87.29% | Val: loss=0.3511, acc=86.49%
+2025-12-16 08:44:39 | INFO | __main__ | Epoch 4/10
+2025-12-16 08:46:16 | INFO | __main__ |   Train: loss=0.2883, acc=87.86% | Val: loss=0.3638, acc=85.98%
+2025-12-16 08:46:17 | INFO | __main__ | Epoch 5/10
+2025-12-16 08:47:54 | INFO | __main__ |   Train: loss=0.2658, acc=88.66% | Val: loss=0.3231, acc=85.81%
+2025-12-16 08:47:55 | INFO | __main__ | Epoch 6/10
+2025-12-16 08:49:32 | INFO | __main__ |   Train: loss=0.2500, acc=89.93% | Val: loss=0.3164, acc=86.71%
+2025-12-16 08:49:33 | INFO | __main__ | Epoch 7/10
+2025-12-16 08:51:11 | INFO | __main__ |   Train: loss=0.2254, acc=90.82% | Val: loss=0.3254, acc=86.37%
+2025-12-16 08:51:11 | INFO | __main__ | Epoch 8/10
+2025-12-16 08:52:49 | INFO | __main__ |   Train: loss=0.2071, acc=91.72% | Val: loss=0.3676, acc=86.32%
+2025-12-16 08:52:49 | INFO | __main__ | Epoch 9/10
+2025-12-16 08:54:27 | INFO | __main__ |   Train: loss=0.1926, acc=92.19% | Val: loss=0.3847, acc=86.60%
+2025-12-16 08:54:27 | INFO | __main__ | Epoch 10/10
+2025-12-16 08:56:05 | INFO | __main__ |   Train: loss=0.1794, acc=92.81% | Val: loss=0.3773, acc=86.49%
+2025-12-16 08:56:05 | INFO | __main__ | Training finished. Running final test evaluation...
+2025-12-16 08:56:28 | INFO | __main__ | Test (CE): loss=0.4223, acc=84.37%
+2025-12-16 08:56:51 | INFO | __main__ | Test metrics: accuracy=84.37%, precision=80.59%, recall=82.15%, f1=81.29%, latency=1.26 ms/img, throughput=791.71 img/s
