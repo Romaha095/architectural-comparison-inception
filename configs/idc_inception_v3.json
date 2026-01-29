@@ -1,0 +1,46 @@
+{
+  "experiment_name": "inception_v3_idc_full",
+  "output_dir": "results/train_results/inception_v3",
+
+  "seed": 42,
+
+  "data": {
+    "root_dir": "data/IDC",
+    "img_size": 299,
+    "batch_size": 128,
+    "num_workers": 4,
+    "pin_memory": true,
+    "max_images_per_class_train": null,
+    "max_images_per_class_val": null,
+    "max_images_per_class_test": null
+  },
+
+
+  "model": {
+    "arch": "inception_v3",
+    "num_classes": 2,
+    "pretrained": true
+  },
+
+  "optim": {
+    "name": "adam",
+    "lr": 0.00045,
+    "weight_decay": 0.0001
+  },
+
+  "scheduler": {
+    "name": "none"
+  },
+
+  "training": {
+    "num_epochs": 30,
+    "device": "cuda",
+    "mixed_precision": true
+  },
+
+  "logging": {
+    "log_dir": "results/train_results/logs",
+    "log_level": "INFO",
+    "log_to_file": true
+  }
+}
