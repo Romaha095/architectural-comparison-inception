@@ -184,3 +184,5 @@ results/train_inception_resnet_v2/...
 ```
 
 Make sure you always run commands from the **project root** and with the virtual environment activated.
+
+MRI Dataset Kaggle link: https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset
