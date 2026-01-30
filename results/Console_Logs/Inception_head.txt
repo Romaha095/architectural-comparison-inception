@@ -1,0 +1,49 @@
+Epoch 1/100
+154/154 ━━━━━━━━━━━━━━━━━━━━ 57s 280ms/step - accuracy: 0.7409 - loss: 0.7904 - val_accuracy: 0.9060 - val_loss: 0.3324
+Epoch 2/100
+154/154 ━━━━━━━━━━━━━━━━━━━━ 20s 129ms/step - accuracy: 0.9077 - loss: 0.2518 - val_accuracy: 0.9316 - val_loss: 0.2047
+Epoch 3/100
+154/154 ━━━━━━━━━━━━━━━━━━━━ 20s 132ms/step - accuracy: 0.9361 - loss: 0.1641 - val_accuracy: 0.9392 - val_loss: 0.1732
+Epoch 4/100
+154/154 ━━━━━━━━━━━━━━━━━━━━ 20s 128ms/step - accuracy: 0.9623 - loss: 0.1110 - val_accuracy: 0.9411 - val_loss: 0.1523
+Epoch 5/100
+154/154 ━━━━━━━━━━━━━━━━━━━━ 20s 126ms/step - accuracy: 0.9618 - loss: 0.0953 - val_accuracy: 0.9440 - val_loss: 0.1529
+Epoch 6/100
+154/154 ━━━━━━━━━━━━━━━━━━━━ 20s 128ms/step - accuracy: 0.9733 - loss: 0.0744 - val_accuracy: 0.9506 - val_loss: 0.1430
+Epoch 7/100
+154/154 ━━━━━━━━━━━━━━━━━━━━ 20s 129ms/step - accuracy: 0.9725 - loss: 0.0719 - val_accuracy: 0.9430 - val_loss: 0.1429
+Epoch 8/100
+154/154 ━━━━━━━━━━━━━━━━━━━━ 20s 130ms/step - accuracy: 0.9855 - loss: 0.0487 - val_accuracy: 0.9487 - val_loss: 0.1284
+Epoch 9/100
+154/154 ━━━━━━━━━━━━━━━━━━━━ 20s 128ms/step - accuracy: 0.9863 - loss: 0.0386 - val_accuracy: 0.9563 - val_loss: 0.1206
+Epoch 10/100
+154/154 ━━━━━━━━━━━━━━━━━━━━ 20s 127ms/step - accuracy: 0.9864 - loss: 0.0420 - val_accuracy: 0.9573 - val_loss: 0.1299
+Epoch 11/100
+154/154 ━━━━━━━━━━━━━━━━━━━━ 20s 128ms/step - accuracy: 0.9875 - loss: 0.0379 - val_accuracy: 0.9563 - val_loss: 0.1286
+Epoch 12/100
+154/154 ━━━━━━━━━━━━━━━━━━━━ 20s 127ms/step - accuracy: 0.9921 - loss: 0.0316 - val_accuracy: 0.9563 - val_loss: 0.1397
+Epoch 13/100
+154/154 ━━━━━━━━━━━━━━━━━━━━ 20s 128ms/step - accuracy: 0.9959 - loss: 0.0211 - val_accuracy: 0.9573 - val_loss: 0.1374
+Epoch 13: early stopping
+Restoring model weights from the end of the best epoch: 9.
+Evaluating Model — Loss: 0.1355, Accuracy: 0.9516
+
+Classification Report:
+              precision    recall  f1-score   support
+
+      Glioma     0.9605    0.9012    0.9299       243
+  Meningioma     0.8812    0.9312    0.9055       247
+    No-tumor     0.9867    0.9900    0.9884       300
+   Pituitary     0.9735    0.9735    0.9735       264
+
+    accuracy                         0.9516      1054
+   macro avg     0.9505    0.9490    0.9493      1054
+weighted avg     0.9526    0.9516    0.9517      1054
+
+Confusion matrix:
+ [[219  23   0   1]
+ [  8 230   4   5]
+ [  0   2 297   1]
+ [  1   6   0 257]]
+
+Balanced Accuracy: 0.9490
