@@ -10,6 +10,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.cuda.amp import GradScaler, autocast
+from tqdm.auto import tqdm
 
 
 def set_seed(seed: int) -> None:
@@ -22,9 +23,7 @@ def set_seed(seed: int) -> None:
     torch.backends.cudnn.benchmark = False
 
 
-def _split_inception_outputs(
-    outputs: Any,
-) -> Tuple[torch.Tensor, Optional[torch.Tensor]]:
+def _split_inception_outputs(outputs: Any) -> Tuple[torch.Tensor, Optional[torch.Tensor]]:
     aux_logits = None
     if hasattr(outputs, "logits") and hasattr(outputs, "aux_logits"):
         logits = outputs.logits
@@ -50,6 +49,10 @@ def train_one_epoch(
     total_loss = 0.0
     total_correct = 0
     total_samples = 0
+
+    dataset_size = len(dataloader.dataset)
+
+    pbar = tqdm(total=dataset_size, desc="Train", unit="img", leave=True)
 
     for inputs, targets in dataloader:
         inputs = inputs.to(device, non_blocking=True)
@@ -84,6 +87,14 @@ def train_one_epoch(
         preds = logits.argmax(dim=1)
         total_correct += (preds == targets).sum().item()
         total_samples += batch_size
+
+        avg_loss = total_loss / max(total_samples, 1)
+        avg_acc = total_correct / max(total_samples, 1)
+
+        pbar.update(batch_size)
+        pbar.set_postfix({"loss": f"{avg_loss:.4f}", "acc": f"{avg_acc * 100:.2f}%", "seen": total_samples})
+
+    pbar.close()
 
     avg_loss = total_loss / max(total_samples, 1)
     avg_acc = total_correct / max(total_samples, 1)
@@ -124,26 +135,89 @@ def evaluate(
     return avg_loss, avg_acc
 
 
-def create_optimizer(
-    model: nn.Module,
-    optim_cfg: Dict[str, Any],
-) -> optim.Optimizer:
-    name = optim_cfg.get("name", "adam").lower()
+def _collect_head_params(model: nn.Module) -> list[torch.nn.Parameter]:
+    head_params: list[torch.nn.Parameter] = []
+
+    # torchvision Inception-style
+    if hasattr(model, "fc") and isinstance(getattr(model, "fc"), nn.Module):
+        head_params += list(model.fc.parameters())
+
+    if hasattr(model, "AuxLogits") and getattr(model, "AuxLogits") is not None:
+        aux = getattr(model, "AuxLogits")
+        if hasattr(aux, "fc") and isinstance(getattr(aux, "fc"), nn.Module):
+            head_params += list(aux.fc.parameters())
+
+    # timm-style
+    if hasattr(model, "get_classifier") and callable(getattr(model, "get_classifier")):
+        try:
+            cls = model.get_classifier()
+            if isinstance(cls, nn.Module):
+                head_params += list(cls.parameters())
+        except Exception:
+            pass
+
+    for attr in ("classifier", "classif", "head"):
+        if hasattr(model, attr) and isinstance(getattr(model, attr), nn.Module):
+            head_params += list(getattr(model, attr).parameters())
+
+    # unique by id
+    uniq: dict[int, torch.nn.Parameter] = {}
+    for p in head_params:
+        uniq[id(p)] = p
+    return list(uniq.values())
+
+
+def create_optimizer(model: nn.Module, optim_cfg: Dict[str, Any]) -> optim.Optimizer:
+    name = str(optim_cfg.get("name", "adam")).lower()
     lr = float(optim_cfg.get("lr", 3e-4))
+    lr_head = float(optim_cfg.get("lr_head", lr))
+    lr_backbone = float(optim_cfg.get("lr_backbone", lr))
     weight_decay = float(optim_cfg.get("weight_decay", 0.0))
 
-    params = [p for p in model.parameters() if p.requires_grad]
+    trainable = [p for p in model.parameters() if p.requires_grad]
+
+    use_param_groups = ("lr_head" in optim_cfg) or ("lr_backbone" in optim_cfg)
+
+    if not use_param_groups:
+        if name == "adam":
+            return optim.Adam(trainable, lr=lr, weight_decay=weight_decay)
+        if name == "adamw":
+            return optim.AdamW(trainable, lr=lr, weight_decay=weight_decay)
+        if name == "sgd":
+            momentum = float(optim_cfg.get("momentum", 0.9))
+            nesterov = bool(optim_cfg.get("nesterov", True))
+            return optim.SGD(
+                trainable,
+                lr=lr,
+                weight_decay=weight_decay,
+                momentum=momentum,
+                nesterov=nesterov,
+            )
+        raise ValueError(f"Unknown optimizer: {name}")
+
+    head_params = [p for p in _collect_head_params(model) if p.requires_grad]
+    head_ids = {id(p) for p in head_params}
+    backbone_params = [p for p in trainable if id(p) not in head_ids]
+
+    if len(head_params) == 0:
+        backbone_params = trainable
+
+    param_groups = []
+    if len(backbone_params) > 0:
+        param_groups.append({"params": backbone_params, "lr": lr_backbone})
+    if len(head_params) > 0:
+        param_groups.append({"params": head_params, "lr": lr_head})
 
     if name == "adam":
-        return optim.Adam(params, lr=lr, weight_decay=weight_decay)
+        return optim.Adam(param_groups, lr=lr_head, weight_decay=weight_decay)
     if name == "adamw":
-        return optim.AdamW(params, lr=lr, weight_decay=weight_decay)
+        return optim.AdamW(param_groups, lr=lr_head, weight_decay=weight_decay)
     if name == "sgd":
         momentum = float(optim_cfg.get("momentum", 0.9))
         nesterov = bool(optim_cfg.get("nesterov", True))
         return optim.SGD(
-            params,
-            lr=lr,
+            param_groups,
+            lr=lr_head,
             weight_decay=weight_decay,
             momentum=momentum,
             nesterov=nesterov,
