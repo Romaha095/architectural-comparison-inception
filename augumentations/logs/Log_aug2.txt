@@ -1,0 +1,45 @@
+Epoch 1/15
+1562/1562 ━━━━━━━━━━━━━━━━━━━━ 451s 272ms/step - accuracy: 0.8337 - loss: 0.3969 - val_accuracy: 0.8543 - val_loss: 0.3435
+Epoch 2/15
+1562/1562 ━━━━━━━━━━━━━━━━━━━━ 395s 253ms/step - accuracy: 0.8552 - loss: 0.3438 - val_accuracy: 0.8587 - val_loss: 0.3338
+Epoch 3/15
+1562/1562 ━━━━━━━━━━━━━━━━━━━━ 391s 250ms/step - accuracy: 0.8590 - loss: 0.3331 - val_accuracy: 0.8642 - val_loss: 0.3329
+Epoch 4/15
+1562/1562 ━━━━━━━━━━━━━━━━━━━━ 393s 251ms/step - accuracy: 0.8613 - loss: 0.3273 - val_accuracy: 0.8616 - val_loss: 0.3303
+Epoch 5/15
+1562/1562 ━━━━━━━━━━━━━━━━━━━━ 404s 258ms/step - accuracy: 0.8642 - loss: 0.3222 - val_accuracy: 0.8646 - val_loss: 0.3250
+Epoch 6/15
+1562/1562 ━━━━━━━━━━━━━━━━━━━━ 390s 250ms/step - accuracy: 0.8623 - loss: 0.3242 - val_accuracy: 0.8627 - val_loss: 0.3218
+Epoch 7/15
+1562/1562 ━━━━━━━━━━━━━━━━━━━━ 388s 249ms/step - accuracy: 0.8644 - loss: 0.3196 - val_accuracy: 0.8606 - val_loss: 0.3289
+Epoch 8/15
+1562/1562 ━━━━━━━━━━━━━━━━━━━━ 390s 250ms/step - accuracy: 0.8669 - loss: 0.3142 - val_accuracy: 0.8600 - val_loss: 0.3357
+Epoch 9/15
+1562/1562 ━━━━━━━━━━━━━━━━━━━━ 388s 248ms/step - accuracy: 0.8686 - loss: 0.3125 - val_accuracy: 0.8648 - val_loss: 0.3202
+Epoch 10/15
+1562/1562 ━━━━━━━━━━━━━━━━━━━━ 388s 248ms/step - accuracy: 0.8693 - loss: 0.3093 - val_accuracy: 0.8672 - val_loss: 0.3159
+Epoch 11/15
+1562/1562 ━━━━━━━━━━━━━━━━━━━━ 393s 252ms/step - accuracy: 0.8696 - loss: 0.3078 - val_accuracy: 0.8661 - val_loss: 0.3166
+Epoch 12/15
+1562/1562 ━━━━━━━━━━━━━━━━━━━━ 388s 249ms/step - accuracy: 0.8705 - loss: 0.3061 - val_accuracy: 0.8651 - val_loss: 0.3174
+Epoch 13/15
+1562/1562 ━━━━━━━━━━━━━━━━━━━━ 401s 257ms/step - accuracy: 0.8708 - loss: 0.3040 - val_accuracy: 0.8651 - val_loss: 0.3191
+Epoch 13: early stopping
+Restoring model weights from the end of the best epoch: 10.
+Evaluating Model — Loss: 0.3177, Accuracy: 0.8654
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0     0.8860    0.9321    0.9085     39793
+           1     0.8020    0.6963    0.7454     15712
+
+    accuracy                         0.8654     55505
+   macro avg     0.8440    0.8142    0.8269     55505
+weighted avg     0.8622    0.8654    0.8623     55505
+
+Confusion matrix:
+ [[37092  2701]
+ [ 4772 10940]]
+
+Balanced Accuracy: 0.8142
