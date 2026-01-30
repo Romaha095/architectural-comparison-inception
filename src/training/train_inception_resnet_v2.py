@@ -23,14 +23,8 @@ from src.evaluation.metrics import evaluate_model
 
 
 def parse_args() -> argparse.Namespace:
-    """Parse command-line arguments.
-
-    Returns:
-        argparse.Namespace: Parsed arguments with a single option for the
-            configuration file path.
-    """
     parser = argparse.ArgumentParser(
-        description="Training Inception‑ResNet‑v2 on the IDC dataset"
+        description="Training Inception-ResNet-v2 on the IDC dataset"
     )
     parser.add_argument(
         "--config_path",
@@ -42,12 +36,11 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
-    """Main entry point for training the Inception‑ResNet‑v2 model."""
     args = parse_args()
     cfg = load_config(args.config_path)
     cfg = prepare_experiment_dirs(cfg)
 
-    # Set up logging
+    # Logging
     log_cfg = cfg.get("logging", {})
     setup_logging(
         log_dir=log_cfg.get("log_dir", cfg["output_dir"] + "/logs"),
@@ -56,21 +49,18 @@ def main() -> None:
     )
     logger = get_logger(__name__)
 
-    # Seed for reproducibility
+    # Seed
     seed = int(cfg.get("seed", 42))
     set_seed(seed)
     logger.info(f"Seed set to {seed}")
 
-    # Determine device
+    # Device
     training_cfg = cfg.get("training", {})
-    device_str = training_cfg.get(
-        "device",
-        "cuda" if torch.cuda.is_available() else "cpu",
-    )
+    device_str = training_cfg.get("device", "cuda" if torch.cuda.is_available() else "cpu")
     device = torch.device(device_str)
     logger.info(f"Using device: {device}")
 
-    # Create data loaders
+    # Data
     data_cfg = cfg["data"]
     train_loader, val_loader, test_loader = create_idc_dataloaders(
         data_root=data_cfg["root_dir"],
@@ -90,23 +80,31 @@ def main() -> None:
     logger.info(f"  Test  examples = {len(test_loader.dataset)}")
     logger.info(f"  Batch size     = {data_cfg.get('batch_size', 64)}")
 
-    # Build Inception‑ResNet‑v2 model
+    # Model
     model_cfg = cfg["model"]
     model = build_inception_resnet_v2(
         num_classes=int(model_cfg["num_classes"]),
         pretrained=bool(model_cfg.get("pretrained", True)),
         freeze_backbone=bool(model_cfg.get("freeze_backbone", True)),
     )
+
+    # === OPTIONAL: exact behavior from your Kaggle patch (.txt) ===
+    # If true -> force all params trainable (even if freeze_backbone=True)
+    if bool(model_cfg.get("force_unfreeze_all", False)):
+        for p in model.parameters():
+            p.requires_grad = True
+        logger.info("force_unfreeze_all=True -> all parameters set to requires_grad=True")
+
     model.to(device)
 
-    # Log model parameter counts
+    # Log params
     total_params = sum(p.numel() for p in model.parameters())
     trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    logger.info(f"Model: inception_resnet_v2")
+    logger.info("Model: inception_resnet_v2")
     logger.info(f"  Total params     = {total_params:,}")
     logger.info(f"  Trainable params = {trainable_params:,}")
 
-    # Loss, optimizer and scheduler
+    # Loss / Optim / Sched
     criterion = nn.CrossEntropyLoss()
     optimizer = create_optimizer(model, cfg["optim"])
     scheduler = create_scheduler(
@@ -115,15 +113,22 @@ def main() -> None:
         num_epochs=int(training_cfg.get("num_epochs", 1)),
     )
 
-    # Mixed precision scaler
+    # AMP
     use_amp = bool(training_cfg.get("mixed_precision", False)) and device.type == "cuda"
     scaler = GradScaler(enabled=use_amp)
     logger.info(f"Mixed precision: {use_amp}")
 
-    # Training loop
+    # Train
     best_val_acc = 0.0
     output_dir = Path(cfg["output_dir"])
     num_epochs = int(training_cfg.get("num_epochs", 1))
+
+    patience = int(training_cfg.get("early_stopping_patience", 0))  # 0 = disabled
+    min_delta = float(training_cfg.get("early_stopping_min_delta", 0.0))
+
+    best_val_loss = float("inf")
+    bad_epochs = 0
+
     for epoch in range(1, num_epochs + 1):
         logger.info(f"Epoch {epoch}/{num_epochs}")
 
@@ -144,6 +149,18 @@ def main() -> None:
             device=device,
         )
 
+        # --- ADD: early stopping by val_loss ---
+        if patience > 0:
+            if val_loss < best_val_loss - min_delta:
+                best_val_loss = val_loss
+                bad_epochs = 0
+            else:
+                bad_epochs += 1
+                logger.info(f"Early stopping: {bad_epochs}/{patience} bad epochs (best val_loss={best_val_loss:.6f})")
+                if bad_epochs >= patience:
+                    logger.info("Early stopping triggered. Stopping training.")
+                    break
+
         logger.info(
             f"  Train: loss={train_loss:.4f}, acc={train_acc*100:.2f}% | "
             f"Val: loss={val_loss:.4f}, acc={val_acc*100:.2f}%"
@@ -156,7 +173,6 @@ def main() -> None:
         if is_best:
             best_val_acc = val_acc
 
-        # Save last and best checkpoints
         state = {
             "epoch": epoch,
             "model_state": model.state_dict(),
@@ -172,23 +188,16 @@ def main() -> None:
 
     logger.info("Training finished. Running final test evaluation...")
 
-    # Evaluate on test set
+    # Test
     test_loss, test_acc = evaluate(
         model=model,
         dataloader=test_loader,
         criterion=criterion,
         device=device,
     )
-    logger.info(
-        f"Test (CE): loss={test_loss:.4f}, acc={test_acc * 100:.2f}%"
-    )
+    logger.info(f"Test (CE): loss={test_loss:.4f}, acc={test_acc * 100:.2f}%")
 
-    # Compute detailed metrics
-    metrics = evaluate_model(
-        model=model,
-        dataloader=test_loader,
-        device=device,
-    )
+    metrics = evaluate_model(model=model, dataloader=test_loader, device=device)
     logger.info(
         "Test metrics: "
         f"accuracy={metrics['accuracy'] * 100:.2f}%, "

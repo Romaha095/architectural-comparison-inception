@@ -1,0 +1,47 @@
+Epoch 1/15
+12489/12489 ━━━━━━━━━━━━━━━━━━━━ 555s 43ms/step - accuracy: 0.8223 - loss: 0.4137 - val_accuracy: 0.8582 - val_loss: 0.3418
+Epoch 2/15
+12489/12489 ━━━━━━━━━━━━━━━━━━━━ 516s 41ms/step - accuracy: 0.8465 - loss: 0.3637 - val_accuracy: 0.8634 - val_loss: 0.3373
+Epoch 3/15
+12489/12489 ━━━━━━━━━━━━━━━━━━━━ 514s 41ms/step - accuracy: 0.8515 - loss: 0.3520 - val_accuracy: 0.8631 - val_loss: 0.3297
+Epoch 4/15
+12489/12489 ━━━━━━━━━━━━━━━━━━━━ 513s 41ms/step - accuracy: 0.8541 - loss: 0.3436 - val_accuracy: 0.8649 - val_loss: 0.3248
+Epoch 5/15
+12489/12489 ━━━━━━━━━━━━━━━━━━━━ 512s 41ms/step - accuracy: 0.8550 - loss: 0.3414 - val_accuracy: 0.8652 - val_loss: 0.3269
+Epoch 6/15
+12489/12489 ━━━━━━━━━━━━━━━━━━━━ 512s 41ms/step - accuracy: 0.8575 - loss: 0.3353 - val_accuracy: 0.8673 - val_loss: 0.3201
+Epoch 7/15
+12489/12489 ━━━━━━━━━━━━━━━━━━━━ 512s 41ms/step - accuracy: 0.8593 - loss: 0.3305 - val_accuracy: 0.8655 - val_loss: 0.3267
+Epoch 8/15
+12489/12489 ━━━━━━━━━━━━━━━━━━━━ 505s 40ms/step - accuracy: 0.8581 - loss: 0.3319 - val_accuracy: 0.8670 - val_loss: 0.3184
+Epoch 9/15
+12489/12489 ━━━━━━━━━━━━━━━━━━━━ 506s 41ms/step - accuracy: 0.8616 - loss: 0.3286 - val_accuracy: 0.8660 - val_loss: 0.3243
+Epoch 10/15
+12489/12489 ━━━━━━━━━━━━━━━━━━━━ 505s 40ms/step - accuracy: 0.8616 - loss: 0.3270 - val_accuracy: 0.8653 - val_loss: 0.3202
+Epoch 11/15
+12489/12489 ━━━━━━━━━━━━━━━━━━━━ 511s 41ms/step - accuracy: 0.8624 - loss: 0.3262 - val_accuracy: 0.8669 - val_loss: 0.3180
+Epoch 12/15
+12489/12489 ━━━━━━━━━━━━━━━━━━━━ 506s 41ms/step - accuracy: 0.8631 - loss: 0.3245 - val_accuracy: 0.8623 - val_loss: 0.3255
+Epoch 13/15
+12489/12489 ━━━━━━━━━━━━━━━━━━━━ 504s 40ms/step - accuracy: 0.8643 - loss: 0.3227 - val_accuracy: 0.8640 - val_loss: 0.3209
+Epoch 14/15
+12489/12489 ━━━━━━━━━━━━━━━━━━━━ 505s 40ms/step - accuracy: 0.8653 - loss: 0.3211 - val_accuracy: 0.8664 - val_loss: 0.3187
+Epoch 14: early stopping
+Restoring model weights from the end of the best epoch: 11.
+Evaluating Model — Loss: 0.3199, Accuracy: 0.8647
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0     0.8862    0.9308    0.9080     39793
+           1     0.7992    0.6974    0.7448     15712
+
+    accuracy                         0.8647     55505
+   macro avg     0.8427    0.8141    0.8264     55505
+weighted avg     0.8616    0.8647    0.8618     55505
+
+Confusion matrix:
+ [[37040  2753]
+ [ 4755 10957]]
+
+Balanced Accuracy: 0.8141
